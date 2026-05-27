@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>致张萧妮的一封信</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'STXihei', sans-serif;
+            /* 更柔和的背景 */
+            background: linear-gradient(135deg, #fffaf6 0%, #f5e6dc 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* 装饰性爱心 */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff9eb5;
+            transform: rotate(45deg);
+            opacity: 0.6;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #ff9eb5;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(45deg) translateY(0px) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: rotate(45deg) translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 信封容器增加景深 */
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 220px;
+            perspective: 800px; /* 稍微拉近镜头，增强3D感 */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 信封主体 */
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            background: #e74c3c;
+            border-radius: 10px;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            /* 增加厚重的阴影 */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.05);
+            /* 增加厚度 */
+            transform-origin: bottom;
+            transform: rotateX(0deg);
+        }
+
+        /* 信封盖子（三角形部分） */
+        .envelope::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #c0392b; /* 深色作为盖子 */
+            top: -98px; /* 微调位置 */
+            left: 0;
+            border-radius: 8px 8px 0 0;
+            /* 为盖子增加阴影，使其浮起 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform-origin: top;
+            z-index: 2;
+        }
+
+        /* 信封底部（增加厚度的视觉） */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            border-radius: 10px;
+            bottom: -10px; /* 错开位置模拟厚度 */
+            left: 0;
+            transform: rotateX(90deg);
+            transform-origin: bottom;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        /* 翻转动画 */
+        .envelope.open {
+            transform: rotateX(180deg) rotateZ(5deg); /* 增加一点Z轴旋转，更生动 */
+        }
+
+        /* 信纸 */
+        .letter {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background: #fdf6f0; /* 米白信纸色 */
+            top: 5%;
+            left: 5%;
+            padding: 25px;
+            border-radius: 6px;
+            /* 卷边效果 */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15), inset 0 1px 0 #fff;
+            opacity: 0;
+            transform: translateY(30px) rotate(-2deg);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+            font-size: 15px;
+            color: #333;
+            line-height: 1.9;
+            border: 1px solid #eee;
+        }
+
+        /* 信纸出现动画 */
+        .envelope.open + .letter {
+            opacity: 1;
+            transform: translateY(0) rotate(0deg);
+            animation: pageCurl 0.5s forwards;
+        }
+
+        @keyframes pageCurl {
+            0% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        h1 {
+            color: #d63424;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 22px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .name {
+            color: #e74c3c;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .apology-btn {
+            display: block;
+            margin: 25px auto 0;
+            background: #d63424;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(214, 52, 36, 0.4);
+            font-weight: bold;
+        }
+
+        .apology-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(214, 52, 36, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 装饰性爱心 -->
+    <script>
+        // 生成漂浮的爱心
+        function createHearts() {
+            const colors = ['#ff9eb5', '#ff6b6b', '#ff8c42', '#e74c3c'];
+            for(let i=0; i<15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                // 随机位置
+                heart.style.left = Math.random() * 100 + 'vw';
+                // 随机大小
+                const size = Math.random() * 15 + 10;
+                heart.style.width = size + 'px';
+                heart.style.height = size + 'px';
+                // 随机颜色
+                heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                // 随机动画时长
+                heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                // 随机动画延迟
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                document.body.appendChild(heart);
+            }
+        }
+        createHearts();
+    </script>
+
+    <div class="envelope-container">
+        <div class="envelope" id="envelope"></div>
+        <div class="letter">
+            <h1>致张萧妮</h1>
+            <p>亲爱的<strong class="name">张萧妮</strong>：</p>
+            <br>
+            <p>你好。提笔写下这封信，心中满是愧疚与不安。</p>
+            <br>
+            <p>关于发生的事情，我反复思考了很久。我意识到，我不该那样对你，让你感到了委屈和难过。那一刻我的言行真的很不成熟，完全忽略了你的感受，这完全是我的责任。</p>
+            <br>
+            <p>你一直是个善良、敏感又包容的女孩，而我却因为一时的冲动，辜负了你的信任。想到你难过的样子，我心里真的非常非常后悔。</p>
+            <br>
+            <p>你对我来说非常重要，是我生命中不可或缺的一部分。失去你的笑容，是我最不愿意看到，也是最让我心痛的事情。</p>
+            <br>
+            <p>所以，我在这里，真诚地向你道歉。对不起，张萧妮，请你原谅我这一次的无知和冲动。我会认真反省，努力改正自己的缺点，给你足够的安全感，绝不再犯同样的错误。</p>
+            <br>
+            <p>只希望能有机会当面跟你说声对不起，希望能重新牵起你的手，看到你开心的样子。我爱你，很久很久，也会更久更久。</p>
+            <br>
+            <p>期待你的原谅。</p>
+            <br>
+            <p style="text-align: right;">爱你的男朋友：陈超</p>
+            <p style="text-align: right; margin-top: 20px;">日期：2026年2月25日</p>
+            <button class="apology-btn" onclick="alert('感谢张萧妮的宽容与谅解！')">接受我的道歉</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('envelope').addEventListener('click', function() {
+            this.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
